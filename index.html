@@ -1,3 +1,9 @@
+<script>
+    if(sessionStorage.getItem('loggedIn') !== 'true'){
+        window.location.href = 'login.html'; // Redirect to login if not logged in
+    }
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,3 +54,13 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+
+<button onclick="logout()">Logout</button>
+
+<script>
+function logout() {
+    sessionStorage.removeItem('loggedIn');
+    window.location.href = 'login.html';
+}
+</script>
