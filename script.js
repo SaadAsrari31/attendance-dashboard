@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     download: true,
     header: true,
     complete: function (results) {
+      console.log(results.data);
       const data = results.data;
-      const tbody = document.getElementById("attendance");
+      const tbody = document.getElementById("attendance-table");
       tbody.innerHTML = ""; // clear old rows
 
       let presentCount = 0;
