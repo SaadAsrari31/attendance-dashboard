@@ -1,31 +1,30 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Load attendance.csv (must be in the same folder as index.html)
-  Papa.parse("attendance.csv", {
+document.addEventListener("DOMContentLoaded", function () {
+  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRXR9bNkCr7QmZnaFplQPjBWd44yHbtEnPDGqTR54Pj7C4h4nwatvCW-d2_HH87LPJ6BrJigfK_imob/pub?output=csv";
+
+  Papa.parse(sheetUrl, {
     download: true,
     header: true,
-    complete: function(results) {
+    complete: function (results) {
       const data = results.data;
-      const tbody = document.getElementById("attendance-table");
+      const tbody = document.getElementById("attendance");
       let presentCount = 0;
 
-      data.forEach(student => {
-        if (!student.Name) return; // skip empty rows
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${student.Name}</td>
-          <td>${student.Date}</td>
-          <td>${student.Time}</td>
-          <td>${student.Status}</td>
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.Name}</td>
+          <td>${row.Date}</td>
+          <td>${row.Time}</td>
+          <td>${row.Status}</td>
         `;
-        tbody.appendChild(row);
+        tbody.appendChild(tr);
 
-        if (student.Status === "Present") presentCount++;
+        if (row.Status === "Present") presentCount++;
       });
 
-      document.getElementById("total").textContent = data.length;
+      document.getElementById("total").textContent = data.length - 1;
       document.getElementById("present").textContent = presentCount;
-      document.getElementById("absent").textContent = data.length - presentCount;
+      document.getElementById("absent").textContent = (data.length - 1) - presentCount;
     }
   });
 });
