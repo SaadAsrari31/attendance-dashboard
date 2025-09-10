@@ -1,14 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRXR9bNkCr7QmZnaFplQPjBWd44yHbtEnPDGqTR54Pj7C4h4nwatvCW-d2_HH87LPJ6BrJigfK_imob/pub?output=csv"; // <-- replace with your link
+  const sheetUrl = "https://opensheet.elk.sh/1aAS9-IxiqwQ3p6Epszo6mX-CNNM0biN1KfZmLiChOAE/Sheet1"; // <-- replace with your ID + sheet name
 
-  Papa.parse(sheetUrl, {
-    download: true,
-    header: true,
-    complete: function (results) {
-      console.log(results.data);
-      const data = results.data;
+  fetch(sheetUrl)
+    .then(res => res.json())
+    .then(data => {
+      console.log("Fetched data:", data); // ✅ Check in console
       const tbody = document.getElementById("attendance-table");
-      tbody.innerHTML = ""; // clear old rows
+      tbody.innerHTML = "";
 
       let presentCount = 0;
       let absentCount = 0;
@@ -29,9 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
         else if (row.Status === "Absent") absentCount++;
       });
 
-      document.getElementById("total").textContent = data.length - 1; // minus header
+      document.getElementById("total").textContent = data.length;
       document.getElementById("present").textContent = presentCount;
       document.getElementById("absent").textContent = absentCount;
-    }
-  });
+    })
+    .catch(err => console.error("Error fetching sheet:", err));
 });
